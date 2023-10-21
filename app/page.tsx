@@ -2,9 +2,8 @@
 
 export default function Home() {
   return (
-    <div>
-      some hting 
-
+    <div >
+      testing something am i 
     </div>
   )
 }
