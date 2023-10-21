@@ -1,10 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@tailwind base; /* Load the base styles provided by Tailwind CSS. */
 
+@tailwind components; /* Load the component styles provided by Tailwind CSS. */
+
+@tailwind utilities; /* Load the utility styles provided by Tailwind CSS. */
 
 html,
 body,
-:root{
-  height:100%;
+:root {
+  height: 100%; /* Set the height of the HTML, body, and root elements to 100%. */
 }

@@ -2,10 +2,17 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
+// Define a functional component named Logo.
 const Logo = () => {
+    // Initialize the useRouter hook to access the routing information.
     const router = useRouter()
-    return(
+
+    // Render the Logo component.
+    return (
+        // Use the Image component to display an image. This image is wrapped in a link (cursor-pointer) and hidden on medium-sized screens (md:block).
         <Image alt="logo" className="hidden md:block cursor-pointer" height='100' width='100' src='/images/logo.png'/>
     )
 }
-export default Logo 
+
+// Export the Logo component as the default export of this module.
+export default Logo

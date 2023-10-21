@@ -1,5 +1,7 @@
+// Import the 'Config' type from the 'tailwindcss' package.
 import type { Config } from 'tailwindcss'
 
+// Define a Tailwind CSS configuration using the 'Config' type.
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -17,4 +19,6 @@ const config: Config = {
   },
   plugins: [],
 }
+
+// Export the Tailwind CSS configuration.
 export default config
