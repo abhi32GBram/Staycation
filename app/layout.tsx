@@ -10,10 +10,19 @@ import './globals.css'
 // Import the 'Navbar' component from the 'Navbar' module.
 import Navbar from './components/navbar/Navbar'
 
+// Import the 'ClientOnly' component from the 'ClientOnly' module.
+import ClientOnly from './components/ClientOnly'
+
+// Import the 'RegisterModal' component from the 'modals/RegisterModal' module.
+import RegisterModal from './components/modals/RegisterModal'
+
+// Import the 'ToasterProvider' for displaying toasts/messages.
+import ToasterProvider from './providers/ToasterProvider'
+
 // Define metadata for the page.
 export const metadata: Metadata = {
-  title: 'Staycation',
-  description: 'Find unique and affordable accommodations for your next staycation',
+  title: 'Staycation', // Set the page title.
+  description: 'Find unique and affordable accommodations for your next staycation', // Set the page description.
 }
 
 // Load the 'Nunito' font with the "latin" subset.
@@ -31,7 +40,11 @@ export default function RootLayout({
     // Define the basic structure of the HTML document with the 'lang' attribute set to "en".
     <html lang="en">
       <body className={font.className}> {/* Apply the 'Nunito' font class to the body. */}
-        <Navbar /> {/* Include the Navbar component for the page's navigation. */}
+        <ClientOnly>
+          <ToasterProvider /> {/* Provide a context for displaying toasts/messages. */}
+          <RegisterModal /> {/* Render the registration modal. */}
+          <Navbar /> {/* Include the Navbar component for the page's navigation. */}
+        </ClientOnly>
         {children} {/* Render the main content (children) of the page. */}
       </body>
     </html>

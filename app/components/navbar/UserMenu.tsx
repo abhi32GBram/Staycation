@@ -1,20 +1,26 @@
+// Import necessary modules and components.
 'use client'
-import React from 'react'
-import { useState, useCallback } from 'react'
-import { AiOutlineMenu } from 'react-icons/ai'
-import Avatar from '../Avatar'
-import MenuItem from './MenuItem'
+import React from 'react';
+import { useState, useCallback } from 'react';
+import { AiOutlineMenu } from 'react-icons/ai';
+import Avatar from '../Avatar';
+import MenuItem from './MenuItem';
+import useRegisterModal from '@/app/hooks/useRegisterModal'; // Import the custom hook for the register modal.
 
 // Define a functional component named UserMenu.
 const UserMenu = () => {
+    const registerModal = useRegisterModal(); // Initialize the register modal hook.
+
     // Initialize a state variable 'isOpen' and a function 'setisOpen' using the 'useState' hook.
-    const [isOpen, setisOpen] = useState(false)
+    const [isOpen, setisOpen] = useState(false);
 
     // Create a callback function 'toggleOpen' to toggle the 'isOpen' state.
     const toggleOpen = useCallback(
         () => {
-            setisOpen((value) => !value)
-        }, [])
+            setisOpen((value) => !value);
+        },
+        []
+    );
 
     return (
         <div className='relative'>
@@ -39,15 +45,15 @@ const UserMenu = () => {
                     <div className='flex flex-col pointer-pointer'>
                         <>
                             {/* Include MenuItem components for "Login" and "SignUp" options. */}
-                            <MenuItem onClick={() => {}} label='Login' />
-                            <MenuItem onClick={() => {}} label='SignUp' />
+                            <MenuItem onClick={() => { }} label='Login' />
+                            <MenuItem onClick={registerModal.onOpen} label='SignUp' /> {/* Trigger the register modal opening. */}
                         </>
                     </div>
                 </div>
             )}
         </div>
-    )
+    );
 }
 
 // Export the UserMenu component as the default export of this module.
-export default UserMenu
+export default UserMenu;

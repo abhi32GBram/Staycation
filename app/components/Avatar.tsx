@@ -1,11 +1,21 @@
-'use client'
-import Image from 'next/image'
-import React from 'react'
+// Import necessary modules and components.
+'use client';
+import Image from 'next/image';
+import React from 'react';
 
+// Define a functional component named Avatar.
 const Avatar = () => {
     return (
-        <Image className='rounded-full' height='30' width='30' alt='Avatar' src='/images/placeholder.jpg' />
-    )
+        // Render an avatar image using the 'next/image' component.
+        <Image
+            className='rounded-full' // Apply rounded styling to make it circular.
+            height='30'
+            width='30'
+            alt='Avatar'
+            src='/images/placeholder.jpg' // Set the image source.
+        />
+    );
 }
 
-export default Avatar
+// Export the Avatar component as the default export of this module.
+export default Avatar;

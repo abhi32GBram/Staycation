@@ -13,7 +13,7 @@ const Container: React.FC<ContainerProps> = ({
     return (
         // Render a container <div> element with responsive width and padding.
         <div className='max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4 '>
-            {children} // Render the child components or elements inside the container.
+            {children} 
         </div>
     )
 }

@@ -23,7 +23,7 @@ const Search = () => {
                 <div className="text-sm pl-6 pr-2 text-gray-600 flex flex-row items-center gap-3">
                     {/* Display the text "Any Desk" (hidden on small screens) with specific styling. */}
                     <div className="hidden sm:block">
-                        Any Desk
+                        Add Guests
                     </div>
 
                     {/* Display a search button with a purple background and a search icon. */}
