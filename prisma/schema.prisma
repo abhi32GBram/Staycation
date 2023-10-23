@@ -1,0 +1,87 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Define the Prisma client generator.
+generator client {
+  provider = "prisma-client-js" // Specifies the Prisma client provider for JavaScript.
+}
+
+// Define the MongoDB data source.
+datasource db {
+  provider = "mongodb" // Indicates that the data source is MongoDB.
+  url      = env("DATABASE_URL") // Retrieves the database URL from environment variables.
+}
+
+// Define the User model, which represents user data.
+model User {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+
+  name           String? // User's name, which is optional.
+  email          String?       @unique // User's email, marked as unique to ensure each email is unique.
+  emailVerified  DateTime? // Timestamp for email verification, used for account validation.
+
+  image          String? // User's profile image URL, if available.
+
+  hashedPassword String? // Hashed password for user authentication.
+
+  createdAt      DateTime      @default(now()) // Timestamp for user account creation.
+  updatedAt      DateTime      @updatedAt // Timestamp for the last update of user data.
+
+  favouriteIds   String[]      @db.ObjectId // An array of favorite listing IDs.
+
+  accounts       Account[] // User's connected accounts, like Google or GitHub.
+  listings       Listing[] // User's property listings.
+  reservations   Reservation[] // User's reservations for properties.
+}
+
+// Define the Account model, representing user account data.
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId // User ID associated with this account.
+
+  type              String // Account type, which can vary (e.g., Google, GitHub).
+
+  provider          String // Authentication provider, such as Google or GitHub.
+  providerAccountId String // Provider-specific account ID.
+  refresh_token     String? @db.String // Refresh token for authentication (optional).
+  access_token      String? @db.String // Access token for authentication (optional).
+  expires_at        Int? // Expiration timestamp for tokens (optional).
+  token_type        String? // Type of token (optional).
+  scope             String? // Scope of the token (optional).
+  id_token          String? @db.String // ID token for authentication (optional).
+  session_state     String? // Session state (optional).
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade) // Relates the account to the user.
+
+  @@unique([provider, providerAccountId]) // Ensures the combination of provider and providerAccountId is unique.
+}
+
+// Define the Listing model, representing property listings.
+model Listing {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  title         String // Title of the property listing.
+  description   String // Description of the property listing.
+  imageSrc      String // URL of the property image.
+  createdAt     DateTime      @default(now()) // Timestamp for listing creation.
+  category      String // Category of the property (e.g., 'Apartment', 'Villa').
+  roomCount     Int // Number of rooms in the property.
+  bathroomCount Int // Number of bathrooms in the property.
+  guestCount    Int // Maximum guest count the property can accommodate.
+  locationValue String // Property location description.
+  userId        String        @db.ObjectId // User ID associated with the listing.
+  price         Int // Price per stay at the property.
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade) // Relates the listing to the user who created it.
+  reservations  Reservation[] // Reservations made for this property.
+}
+
+// Define the Reservation model, representing property reservations.
+model Reservation {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId // User ID making the reservation.
+  listingId  String   @db.ObjectId // Listing ID associated with the reservation.
+  startDate  DateTime // Start date of the reservation.
+  endDate    DateTime // End date of the reservation.
+  totalPrice Int // Total price for the reservation.
+  createdAt  DateTime @default(now()) // Timestamp for reservation creation.
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relates the reservation to the user.
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade) // Relates the reservation to the property listing.
+}

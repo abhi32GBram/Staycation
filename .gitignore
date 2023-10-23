@@ -33,3 +33,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# MONGODB :- username: abhiramsuradkar ; passoword Vhzp9Ljc3QhidTck
