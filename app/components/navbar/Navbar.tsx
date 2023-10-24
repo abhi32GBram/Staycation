@@ -1,16 +1,16 @@
 'use client'
 
-
 import { SafeUser } from "@/app/types";
 
 import Container from "../container";
 import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
+import Categories from "./Categories";
 
 // Define an interface for the NavbarProps.
 interface NavbarProps {
-    currentUser? : SafeUser | null
+    currentUser?: SafeUser | null
 }
 
 // Define a functional component named Navbar, which expects props of type NavbarProps.
@@ -27,15 +27,16 @@ const Navbar: React.FC<NavbarProps> = ({
                     <div className=" flex flex-row items-center justify-between gap-3 md:gap-0">
                         {/* Include the Logo component for displaying the site's logo. */}
                         <Logo />
-                        
+
                         {/* Include the Search component for search functionality. */}
                         <Search />
-                        
+
                         {/* Include the UserMenu component for user-related menu options. */}
-                        <UserMenu currentUser={currentUser}/>
+                        <UserMenu currentUser={currentUser} />
                     </div>
                 </Container>
             </div>
+            <Categories />
         </div>
     );
 };

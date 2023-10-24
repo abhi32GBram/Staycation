@@ -10,7 +10,7 @@ const Logo = () => {
     // Render the Logo component.
     return (
         // Use the Image component to display an image. This image is wrapped in a link (cursor-pointer) and hidden on medium-sized screens (md:block).
-        <Image alt="logo" className="hidden md:block cursor-pointer" height='100' width='100' src='/images/logo.png'/>
+        <Image onClick={()=>router.push('/')} alt="logo" className="hidden md:block cursor-pointer" height='100' width='100' src='/images/logo.png'/>
     )
 }
 
