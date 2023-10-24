@@ -3,8 +3,13 @@
 import Image from 'next/image';
 import React from 'react';
 
+interface AvatarProps{
+    src : string | null | undefined
+}
 // Define a functional component named Avatar.
-const Avatar = () => {
+const Avatar : React.FC<AvatarProps> = ({
+    src
+}) => {
     return (
         // Render an avatar image using the 'next/image' component.
         <Image
@@ -12,7 +17,7 @@ const Avatar = () => {
             height='30'
             width='30'
             alt='Avatar'
-            src='/images/placeholder.jpg' // Set the image source.
+            src={src || "/images/placeholder.jpg"} // Set the image source.
         />
     );
 }

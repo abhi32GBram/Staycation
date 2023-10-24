@@ -1,26 +1,38 @@
 // Import necessary modules and components.
-'use client'
+'use client';
 import React from 'react';
 import { useState, useCallback } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
-import Avatar from '../Avatar';
-import MenuItem from './MenuItem';
-import useRegisterModal from '@/app/hooks/useRegisterModal'; // Import the custom hook for the register modal.
+import Avatar from '../Avatar'; // Custom component for displaying the user's avatar.
+import MenuItem from './MenuItem'; // Custom component for menu items.
 
-// Define a functional component named UserMenu.
-const UserMenu = () => {
-    const registerModal = useRegisterModal(); // Initialize the register modal hook.
+// Import custom hooks for the register and login modals.
+import useRegisterModal from '@/app/hooks/useRegisterModal';
+import useLoginModal from '@/app/hooks/useLoginModal';
+import { User } from '@prisma/client';
+import { signOut } from 'next-auth/react';
+import { SafeUser } from '@/app/types';
+
+// Define the props interface for the 'UserMenu' component.
+interface UserMenuProps {
+    currentUser?: SafeUser | null; // Optional current user data.
+}
+
+// Define a functional component named 'UserMenu'.
+const UserMenu: React.FC<UserMenuProps> = ({
+    currentUser
+}) => {
+    // Initialize the register and login modal hooks.
+    const registerModal = useRegisterModal();
+    const loginModal = useLoginModal();
 
     // Initialize a state variable 'isOpen' and a function 'setisOpen' using the 'useState' hook.
     const [isOpen, setisOpen] = useState(false);
 
     // Create a callback function 'toggleOpen' to toggle the 'isOpen' state.
-    const toggleOpen = useCallback(
-        () => {
-            setisOpen((value) => !value);
-        },
-        []
-    );
+    const toggleOpen = useCallback(() => {
+        setisOpen((value) => !value);
+    }, []);
 
     return (
         <div className='relative'>
@@ -31,23 +43,35 @@ const UserMenu = () => {
                 </div>
 
                 {/* Create a button with an avatar and a menu icon, clickable to toggle the dropdown. */}
-                <div onClick={toggleOpen} className='p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer  hover:shadow-md transition'>
+                <div onClick={toggleOpen} className='p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'>
                     <AiOutlineMenu /> {/* Display the menu icon. */}
                     <div className='hidden md:block'>
-                        <Avatar /> {/* Display the user's avatar (hidden on medium-sized screens). */}
+                        <Avatar src={currentUser?.image} /> {/* Display the user's avatar (hidden on medium-sized screens). */}
                     </div>
                 </div>
             </div>
 
             {/* Conditionally render the dropdown menu when 'isOpen' is true. */}
             {isOpen && (
-                <div className='absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white  overflow-hidden right-0 top-12 text-sm'>
-                    <div className='flex flex-col pointer-pointer'>
-                        <>
-                            {/* Include MenuItem components for "Login" and "SignUp" options. */}
-                            <MenuItem onClick={() => { }} label='Login' />
-                            <MenuItem onClick={registerModal.onOpen} label='SignUp' /> {/* Trigger the register modal opening. */}
-                        </>
+                <div className='absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm'>
+                    <div className='flex flex-col cursor-pointer'>
+                        {currentUser ? (
+                            <>
+                                {/* If a user is logged in, show user-specific menu options. */}
+                                <MenuItem onClick={() => { }} label='My Trips' /> {/* Show user's trips. */}
+                                <MenuItem onClick={() => { }} label='My Favourites' /> {/* Show user's favorites. */}
+                                <MenuItem onClick={() => { }} label='My Reservations' /> {/* Show user's reservations. */}
+                                <MenuItem onClick={() => { }} label='Staycation My Home' /> {/* Show user's home details. */}
+                                <hr />
+                                <MenuItem onClick={() => signOut()} label='Log Out' /> {/* Log out the user. */}
+                            </>
+                        ) : (
+                            <>
+                                {/* If no user is logged in, show login and signup options. */}
+                                <MenuItem onClick={loginModal.onOpen} label='Login' /> {/* Trigger the login modal opening. */}
+                                <MenuItem onClick={registerModal.onOpen} label='SignUp' /> {/* Trigger the register modal opening. */}
+                            </>
+                        )}
                     </div>
                 </div>
             )}
@@ -55,5 +79,5 @@ const UserMenu = () => {
     );
 }
 
-// Export the UserMenu component as the default export of this module.
+// Export the 'UserMenu' component as the default export of this module.
 export default UserMenu;

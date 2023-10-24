@@ -1,15 +1,22 @@
 'use client'
 
+
+import { SafeUser } from "@/app/types";
+
 import Container from "../container";
 import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 
 // Define an interface for the NavbarProps.
-interface NavbarProps {}
+interface NavbarProps {
+    currentUser? : SafeUser | null
+}
 
 // Define a functional component named Navbar, which expects props of type NavbarProps.
-const Navbar: React.FC<NavbarProps> = ({}) => {
+const Navbar: React.FC<NavbarProps> = ({
+    currentUser
+}) => {
     return (
         // Render a fixed navigation bar with a white background, a shadow, and a z-index of 10.
         <div className="fixed w-full bg-white z-10 shadow-sm">
@@ -25,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
                         <Search />
                         
                         {/* Include the UserMenu component for user-related menu options. */}
-                        <UserMenu />
+                        <UserMenu currentUser={currentUser}/>
                     </div>
                 </Container>
             </div>
