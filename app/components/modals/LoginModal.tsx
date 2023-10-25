@@ -78,6 +78,15 @@ const LoginModal = () => {
         });
     }
 
+    // To bring up the Registration modal and close the Login modal when using the small text register
+    const toggle = useCallback(
+        () => {
+            loginModal.onClose()
+            registerModal.onOpen()
+        },
+        [loginModal,registerModal]
+    )
+
     // Define the content of the modal's body.
     const bodyContent = (
         <div className='flex flex-col gap-4'>
@@ -97,10 +106,10 @@ const LoginModal = () => {
             <div className='text-neutral-500 text-center mt-4 text-light'>
                 <div>
                     <div className=' justify-center flex flex-row items-center gap-2'>
-                        Already have an Account ?
+                        First Time using Staycation ?
                     </div>
-                    <div className='text-neutral-800 cursor-pointer hover:underline' onClick={registerModal.onClose}>
-                        Log In
+                    <div className='text-neutral-800 cursor-pointer hover:underline' onClick={toggle}>
+                        Create an Account
                     </div>
                 </div>
             </div>

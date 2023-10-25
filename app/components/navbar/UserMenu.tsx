@@ -13,6 +13,9 @@ import { User } from '@prisma/client';
 import { signOut } from 'next-auth/react';
 import { SafeUser } from '@/app/types';
 
+import LoginModal from '../modals/LoginModal';
+import useRentModal from '@/app/hooks/useRentModal';
+
 // Define the props interface for the 'UserMenu' component.
 interface UserMenuProps {
     currentUser?: SafeUser | null; // Optional current user data.
@@ -22,9 +25,10 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({
     currentUser
 }) => {
-    // Initialize the register and login modal hooks.
+    // Initialize the register and login and Rent modal hooks.
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
+    const rentModal = useRentModal();
 
     // Initialize a state variable 'isOpen' and a function 'setisOpen' using the 'useState' hook.
     const [isOpen, setisOpen] = useState(false);
@@ -34,11 +38,22 @@ const UserMenu: React.FC<UserMenuProps> = ({
         setisOpen((value) => !value);
     }, []);
 
+    // Callback function for handling the 'Rent' action
+    const onRent = useCallback(() => {
+        if (!currentUser) {
+            // If no user is logged in, open the login modal.
+            return loginModal.onOpen();
+        } else {
+            // If a user is logged in, open the rent modal.
+            rentModal.onOpen();
+        }
+    }, [currentUser, loginModal, rentModal]);
+
     return (
         <div className='relative'>
             <div className='flex flex-row items-center gap-3'>
                 {/* Create a clickable div for "Staycation your Home" (hidden on medium-sized screens). */}
-                <div onClick={() => { }} className='hidden md:block text-sm font-semibold px-4 py-3 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
+                <div onClick={onRent} className='hidden md:block text-sm font-semibold px-4 py-3 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
                     Staycation your Home
                 </div>
 
@@ -61,7 +76,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                 <MenuItem onClick={() => { }} label='My Trips' /> {/* Show user's trips. */}
                                 <MenuItem onClick={() => { }} label='My Favourites' /> {/* Show user's favorites. */}
                                 <MenuItem onClick={() => { }} label='My Reservations' /> {/* Show user's reservations. */}
-                                <MenuItem onClick={() => { }} label='Staycation My Home' /> {/* Show user's home details. */}
+                                <MenuItem onClick={rentModal.onOpen} label='Staycation My Home' /> {/* Show user's home details. */}
                                 <hr />
                                 <MenuItem onClick={() => signOut()} label='Log Out' /> {/* Log out the user. */}
                             </>
@@ -69,7 +84,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                             <>
                                 {/* If no user is logged in, show login and signup options. */}
                                 <MenuItem onClick={loginModal.onOpen} label='Login' /> {/* Trigger the login modal opening. */}
-                                <MenuItem onClick={registerModal.onOpen} label='SignUp' /> {/* Trigger the register modal opening. */}
+                                <MenuItem onClick={registerModal.onOpen} label='Sign Up' /> {/* Trigger the register modal opening. */}
                             </>
                         )}
                     </div>

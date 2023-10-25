@@ -1,3 +1,4 @@
+
 // Import necessary modules and components.
 
 // Import the 'Metadata' type from the 'next' package.
@@ -26,6 +27,7 @@ import ToasterProvider from './providers/ToasterProvider'
 
 // Import the 'getCurrentUser' function from './actions/getCurrentUser'.
 import getCurrentUser from './actions/getCurrentUser'
+import RentModal from './components/modals/RentModal'
 
 // Define metadata for the page.
 export const metadata: Metadata = {
@@ -54,6 +56,7 @@ export default async function RootLayout({
         <ClientOnly>
           <ToasterProvider /> {/* Provide a context for displaying toasts/messages. */}
           <RegisterModal /> {/* Render the registration modal. */}
+          <RentModal />
           <LoginModal /> {/* Render the Login modal using Google or Github. */}
           <Navbar currentUser={currentUser} /> {/* Include the Navbar component for the page's navigation and pass the 'currentUser' data. */}
         </ClientOnly>
