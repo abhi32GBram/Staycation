@@ -10,6 +10,7 @@ import { categories } from '../navbar/Categories'
 import CategoryInput from '../inputs/CategoryInput'
 
 import { FieldValues, useForm } from 'react-hook-form'
+import CountrySelect from '../inputs/CountrySelect'
 
 // Define an enumeration for the different steps in the rental process.
 enum STEPS {
@@ -90,6 +91,7 @@ const RentModal = () => {
         return 'Back'
     }, [step])
 
+
     // Define the content for the modal's body based on the current step.
     let bodyContent = (
         <div className='flex flex-col gap-8'>
@@ -109,12 +111,22 @@ const RentModal = () => {
         </div>
     )
 
+    if (step === STEPS.LOCATION) {
+        bodyContent = (
+            <div className='flex flex-col gap-8'>
+                <Heading title='Where is your Place Located ?' subtitle='Help Guests find you !' />
+                <CountrySelect />
+            </div>
+        )
+    }
+
+
     return (
         <Modal
             title='Staycation your Home '
             isOpen={rentModal.isOpen}
             onClose={rentModal.onClose}
-            onSubmit={rentModal.onClose}
+            onSubmit={onNext}
             actionLabel='Submit'
             secondaryActionLabel={secondaryActionLabel}
             secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
