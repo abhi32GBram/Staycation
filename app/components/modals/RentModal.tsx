@@ -8,9 +8,9 @@ import useRentModal from '@/app/hooks/useRentModal'
 import Heading from '../Heading'
 import { categories } from '../navbar/Categories'
 import CategoryInput from '../inputs/CategoryInput'
-
 import { FieldValues, useForm } from 'react-hook-form'
 import CountrySelect from '../inputs/CountrySelect'
+import dynamic from 'next/dynamic'
 
 // Define an enumeration for the different steps in the rental process.
 enum STEPS {
@@ -51,19 +51,21 @@ const RentModal = () => {
         }
     })
 
-    // Watch for changes in the 'category' field.
+    // Watch for changes in the 'category' and 'location' fields.
     const category = watch('category')
+    const location = watch('location')
 
-    // Function to set a custom form field value.
+    // Dynamically import the 'Map' component based on whether the 'location' is set.
+    const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [location]);
+
+    // Function to set a custom form field value with validation flags.
     const setCustomValue = (id: string, value: any) => {
         setValue(id, value, {
-            shouldDirty: true,   //  value of the field has been changed or modified
-            shouldTouch: true,   //   the field has been interacted with (e.g., clicked, focused, or edited) by the user
-            shouldValidate: true //   often necessary when the value of a form field changes, and this property ensures that the field's validation rules are applied again to the new value.
+            shouldDirty: true,   // value of the field has been changed or modified
+            shouldTouch: true,   // the field has been interacted with (e.g., clicked, focused, or edited) by the user
+            shouldValidate: true // often necessary when the value of a form field changes, and this property ensures that the field's validation rules are applied again to the new value.
         })
     }
-
-
 
     // Function to navigate to the previous step.
     const onBack = () => {
@@ -91,7 +93,6 @@ const RentModal = () => {
         return 'Back'
     }, [step])
 
-
     // Define the content for the modal's body based on the current step.
     let bodyContent = (
         <div className='flex flex-col gap-8'>
@@ -111,15 +112,16 @@ const RentModal = () => {
         </div>
     )
 
+    // Update body content if the current step is 'LOCATION'.
     if (step === STEPS.LOCATION) {
         bodyContent = (
             <div className='flex flex-col gap-8'>
                 <Heading title='Where is your Place Located ?' subtitle='Help Guests find you !' />
-                <CountrySelect />
+                <CountrySelect value={location} onChange={(value) => setCustomValue('location', value)} />
+                <Map center={location?.latlng} />
             </div>
         )
     }
-
 
     return (
         <Modal
