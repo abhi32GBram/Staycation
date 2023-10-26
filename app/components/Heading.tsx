@@ -20,7 +20,7 @@ const Heading: React.FC<HeadingProps> = ({
                 {title}
             </div>
             {/* Render the subtitle with a lighter font and a top margin. */}
-            <div className='font-light text-neutral-500 mt-2'>
+            <div className='font-light text-neutral-500 mt-2 mb-3'>
                 {subtitle}
             </div>
         </div>

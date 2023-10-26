@@ -6,12 +6,16 @@ import Modal from './Modals'
 import useRentModal from '@/app/hooks/useRentModal'
 
 import Heading from '../Heading'
-import { categories } from '../navbar/Categories'
-import CategoryInput from '../inputs/CategoryInput'
+
 import { FieldValues, useForm } from 'react-hook-form'
-import CountrySelect from '../inputs/CountrySelect'
+
 import dynamic from 'next/dynamic'
+
 import Counter from '../inputs/Counter'
+import ImageUpload from '../inputs/ImageUpload'
+import { categories } from '../navbar/Categories'
+import CountrySelect from '../inputs/CountrySelect'
+import CategoryInput from '../inputs/CategoryInput'
 
 // Define an enumeration for the different steps in the rental process.
 enum STEPS {
@@ -58,6 +62,7 @@ const RentModal = () => {
     const guestCount = watch('guestCount')
     const roomCount = watch('roomCount')
     const bathroomCount = watch('bathroomCount')
+    const imageSrc = watch('image')
 
     // Dynamically import the 'Map' component based on whether the 'location' is set.
     const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [location]);
@@ -155,6 +160,18 @@ const RentModal = () => {
                     title="Bathrooms"
                     subtitle="How many bathrooms do you have?"
                 />
+            </div>
+        )
+    }
+
+    // Update body content if the current step is 'IMAGES'.
+    if (step === STEPS.IMAGES) {
+        bodyContent = (
+            <div className='flex flex-col gap-8'>
+                <div>
+                    <Heading title='Add a Photo of your Place' subtitle='Show your Guests a Glimpse of your Property !' />
+                    <ImageUpload value={imageSrc} onChange={(value)=>setCustomValue('imageSrc',value)}/>
+                </div>
             </div>
         )
     }
