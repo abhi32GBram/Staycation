@@ -11,6 +11,7 @@ import CategoryInput from '../inputs/CategoryInput'
 import { FieldValues, useForm } from 'react-hook-form'
 import CountrySelect from '../inputs/CountrySelect'
 import dynamic from 'next/dynamic'
+import Counter from '../inputs/Counter'
 
 // Define an enumeration for the different steps in the rental process.
 enum STEPS {
@@ -54,6 +55,9 @@ const RentModal = () => {
     // Watch for changes in the 'category' and 'location' fields.
     const category = watch('category')
     const location = watch('location')
+    const guestCount = watch('guestCount')
+    const roomCount = watch('roomCount')
+    const bathroomCount = watch('bathroomCount')
 
     // Dynamically import the 'Map' component based on whether the 'location' is set.
     const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [location]);
@@ -61,9 +65,9 @@ const RentModal = () => {
     // Function to set a custom form field value with validation flags.
     const setCustomValue = (id: string, value: any) => {
         setValue(id, value, {
-            shouldDirty: true,   // value of the field has been changed or modified
-            shouldTouch: true,   // the field has been interacted with (e.g., clicked, focused, or edited) by the user
-            shouldValidate: true // often necessary when the value of a form field changes, and this property ensures that the field's validation rules are applied again to the new value.
+            shouldDirty: true,   // Indicates that the value of the field has been changed or modified.
+            shouldTouch: true,   // Indicates that the field has been interacted with (e.g., clicked, focused, or edited) by the user.
+            shouldValidate: true // Ensures that the field's validation rules are applied again to the new value, often necessary when the value of a form field changes.
         })
     }
 
@@ -123,14 +127,46 @@ const RentModal = () => {
         )
     }
 
+    // Update body content if the current step is 'INFO'.
+    if (step === STEPS.INFO) {
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Share some basics about your place"
+                    subtitle="What Amenities do you have?"
+                />
+                <Counter
+                    onChange={(value) => setCustomValue('guestCount', value)}
+                    value={guestCount}
+                    title="Guests"
+                    subtitle="How many guests do you allow?"
+                />
+                <hr />
+                <Counter
+                    onChange={(value) => setCustomValue('roomCount', value)}
+                    value={roomCount}
+                    title="Rooms"
+                    subtitle="How many rooms do you have?"
+                />
+                <hr />
+                <Counter
+                    onChange={(value) => setCustomValue('bathroomCount', value)}
+                    value={bathroomCount}
+                    title="Bathrooms"
+                    subtitle="How many bathrooms do you have?"
+                />
+            </div>
+        )
+    }
+
     return (
         <Modal
             title='Staycation your Home '
             isOpen={rentModal.isOpen}
             onClose={rentModal.onClose}
             onSubmit={onNext}
-            actionLabel='Submit'
-            secondaryActionLabel={secondaryActionLabel}
+            actionLabel={actionLabel}  // Set the label for the primary action button.
+            secondaryActionLabel={secondaryActionLabel} // Set the label for the secondary action button.
             secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
             body={bodyContent}
         />
