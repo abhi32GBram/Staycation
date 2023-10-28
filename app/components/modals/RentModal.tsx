@@ -1,13 +1,14 @@
 // Import necessary modules and components.
 'use client'
 import React, { useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import Modal from './Modals'
 import useRentModal from '@/app/hooks/useRentModal'
 
 import Heading from '../Heading'
 
-import { FieldValues, useForm } from 'react-hook-form'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 import dynamic from 'next/dynamic'
 
@@ -18,6 +19,8 @@ import CountrySelect from '../inputs/CountrySelect'
 import CategoryInput from '../inputs/CategoryInput'
 import Input from '../inputs/Input'
 import { IoPlaySkipForwardOutline } from 'react-icons/io5'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 // Define an enumeration for the different steps in the rental process.
 enum STEPS {
@@ -30,6 +33,9 @@ enum STEPS {
 }
 
 const RentModal = () => {
+
+    const router = useRouter()
+
     // Use the 'useRentModal' custom hook to manage the rental modal state.
     const rentModal = useRentModal()
 
@@ -90,6 +96,36 @@ const RentModal = () => {
         setstep((value) => value + 1)
     }
 
+    // Define an event handler for form submission, which takes the form data as 'data'.
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        // Check if the current step is not 'PRICE'.
+        if (step !== STEPS.PRICE) {
+            // If not in the 'PRICE' step, move to the next step and return.
+            return onNext();
+        }
+
+        // Set the loading state to indicate that the form submission is in progress.
+        setisLoading(true);
+
+        // Make an HTTP POST request to the '/api/listings' endpoint with the form data.
+        axios.post('/api/listings', data).then(() => {
+            // If the request is successful, display a success notification.
+            toast.success("Listing Created Successfully !");
+
+            // Refresh the router, likely to update the UI with the new listing.
+            router.refresh();
+
+            // Reset the form data for a new listing and close the modal.
+            reset();
+            rentModal.onClose();
+        }).catch(() => {
+            // If the request encounters an error, display an error notification.
+            toast.error("Something Went Wrong ! ");
+        }).finally(() => {
+            // Set the loading state to false to indicate that the submission process is complete.
+            setisLoading(false);
+        });
+    }
     // Determine the label for the primary action button based on the current step.
     const actionLabel = useMemo(() => {
         if (step === STEPS.PRICE) {
@@ -180,42 +216,56 @@ const RentModal = () => {
         )
     }
 
+    // Check if the current step is 'DESCRIPTION'.
     if (step === STEPS.DESCRIPTION) {
+        // Define the content for the 'DESCRIPTION' step.
         bodyContent = (
             <div className='flex flex-col gap-8'>
-                    <Heading title='How would you describe your Place' subtitle='In Short and Sweet does it' />
-                    <Input id='title' label='Title' disabled={isLoading} register={register} errors={errors} required />
-                    <hr />
-                    <Input id='description' label='Description' disabled={isLoading} register={register} errors={errors} required />
-                </div>
+                {/* Display a heading for the 'DESCRIPTION' step. */}
+                <Heading title='How would you describe your Place' subtitle='In Short and Sweet does it' />
+
+                {/* Input field for 'Title' with error handling and validation. */}
+                <Input id='title' label='Title' disabled={isLoading} register={register} errors={errors} required />
+
+                {/* Horizontal line to separate input fields. */}
+                <hr />
+
+                {/* Input field for 'Description' with error handling and validation. */}
+                <Input id='description' label='Description' disabled={isLoading} register={register} errors={errors} required />
+            </div>
         )
     }
 
+    // Check if the current step is 'PRICE'.
     if (step === STEPS.PRICE) {
+        // Define the content for the 'PRICE' step.
         bodyContent = (
             <div className='flex flex-col gap-8'>
-                    <Heading title='Now, Set a Price !' subtitle='How much will you Charger per Night ?' />
-                    <Input id='price' label='Price' formatPrice={true} type='number' disabled={isLoading} register={register} errors={errors} required />
-                </div>
+                {/* Display a heading for the 'PRICE' step. */}
+                <Heading title='Now, Set a Price !' subtitle='How much will you Charger per Night ?' />
+
+                {/* Input field for 'Price' with special formatting for currency and number type. */}
+                <Input id='price' label='Price' formatPrice={true} type='number' disabled={isLoading} register={register} errors={errors} required />
+            </div>
         )
     }
 
-
+    // Return the Modal component with the appropriate body content based on the current step.
     return (
         <Modal
             title='Staycation your Home '
             isOpen={rentModal.isOpen}
             onClose={rentModal.onClose}
-            onSubmit={onNext}
+            onSubmit={handleSubmit(onSubmit)}
             actionLabel={actionLabel}  // Set the label for the primary action button.
             secondaryActionLabel={secondaryActionLabel} // Set the label for the secondary action button.
             secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
             body={bodyContent}
         />
     )
-}
 
+}
 export default RentModal
 
 
-// 4 32 
+// 432 
