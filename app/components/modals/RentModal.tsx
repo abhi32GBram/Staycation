@@ -16,6 +16,8 @@ import ImageUpload from '../inputs/ImageUpload'
 import { categories } from '../navbar/Categories'
 import CountrySelect from '../inputs/CountrySelect'
 import CategoryInput from '../inputs/CategoryInput'
+import Input from '../inputs/Input'
+import { IoPlaySkipForwardOutline } from 'react-icons/io5'
 
 // Define an enumeration for the different steps in the rental process.
 enum STEPS {
@@ -33,6 +35,8 @@ const RentModal = () => {
 
     // Initialize the 'step' state to manage the current step in the rental process.
     const [step, setstep] = useState(STEPS.CATEGORY)
+
+    const [isLoading, setisLoading] = useState(false)
 
     // Use the 'useForm' hook from 'react-hook-form' to manage form data and validation.
     const {
@@ -170,11 +174,32 @@ const RentModal = () => {
             <div className='flex flex-col gap-8'>
                 <div>
                     <Heading title='Add a Photo of your Place' subtitle='Show your Guests a Glimpse of your Property !' />
-                    <ImageUpload value={imageSrc} onChange={(value)=>setCustomValue('imageSrc',value)}/>
+                    <ImageUpload value={imageSrc} onChange={(value) => setCustomValue('imageSrc', value)} />
                 </div>
             </div>
         )
     }
+
+    if (step === STEPS.DESCRIPTION) {
+        bodyContent = (
+            <div className='flex flex-col gap-8'>
+                    <Heading title='How would you describe your Place' subtitle='In Short and Sweet does it' />
+                    <Input id='title' label='Title' disabled={isLoading} register={register} errors={errors} required />
+                    <hr />
+                    <Input id='description' label='Description' disabled={isLoading} register={register} errors={errors} required />
+                </div>
+        )
+    }
+
+    if (step === STEPS.PRICE) {
+        bodyContent = (
+            <div className='flex flex-col gap-8'>
+                    <Heading title='Now, Set a Price !' subtitle='How much will you Charger per Night ?' />
+                    <Input id='price' label='Price' formatPrice={true} type='number' disabled={isLoading} register={register} errors={errors} required />
+                </div>
+        )
+    }
+
 
     return (
         <Modal
@@ -191,3 +216,6 @@ const RentModal = () => {
 }
 
 export default RentModal
+
+
+// 4 32 

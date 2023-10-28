@@ -24,7 +24,7 @@ const Input: React.FC<InputProps> = ({
         <div className='w-full relative'>
             {formatPrice && (
                 // Render the Rupee Sign icon if 'formatPrice' is true.
-                <FaRupeeSign size={24} className='text-neutral-700 absolute top-5 left-2' />
+                <FaRupeeSign size={22} className='text-neutral-700 absolute top-5 left-2' />
             )}
             <input
                 id={id}
