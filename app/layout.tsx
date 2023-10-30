@@ -60,7 +60,9 @@ export default async function RootLayout({
           <LoginModal /> {/* Render the Login modal using Google or Github. */}
           <Navbar currentUser={currentUser} /> {/* Include the Navbar component for the page's navigation and pass the 'currentUser' data. */}
         </ClientOnly>
-        {children} {/* Render the main content (children) of the page. */}
+        <div className='pb-20 pt-28'>
+          {children} {/* Render the main content (children) of the page. */}
+        </div>
       </body>
     </html>
   )
