@@ -1,4 +1,4 @@
-import prisma from '@/app/libs/prismadb'
+import prisma from '@/app/libs/prismadb';
 
 /**
  * Fetch a list of listings from the database.
@@ -11,12 +11,18 @@ export default async function getListings() {
         // Use Prisma to find and retrieve a list of listings from the database.
         const listings = await prisma.listing.findMany({
             orderBy: {
-                createdAt: 'desc' // Order the listings by creation date in descending order.
-            }
+                createdAt: 'desc', // Order the listings by creation date in descending order.
+            },
         });
 
+        // Convert the 'createdAt' property to ISO string for safe serialization.
+        const safeListings = listings.map((listing) => ({
+            ...listing,
+            createdAt: listing.createdAt.toISOString(),
+        }));
+
         // Return the retrieved listings.
-        return listings;
+        return safeListings;
     } catch (error: any) {
         // If an error occurs during the database query, throw an error.
         throw new Error(error);

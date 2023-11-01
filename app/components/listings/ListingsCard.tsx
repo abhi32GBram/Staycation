@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { SafeUser } from '@/app/types';
+import { SafeListings, SafeUser } from '@/app/types';
 
 import { Listing, Reservation } from '@prisma/client';
 
@@ -17,7 +17,7 @@ import Button from '../Button';
  * Props for the ListingsCard component.
  */
 interface ListingsCardProps {
-    data: Listing;            // Listing data to display.
+    data: SafeListings;            // Listing data to display.
     reservation?: Reservation; // Reservation data, if applicable.
     onAction?: (id: string) => void;  // Callback function for user actions.
     disabled?: boolean;       // Flag indicating if the component is disabled.

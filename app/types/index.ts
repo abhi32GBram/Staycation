@@ -1,6 +1,13 @@
 // Import the User type from the Prisma client, which represents a user object.
-import { User } from "@prisma/client";
+import { Listing, User } from "@prisma/client";
 
+
+export type SafeListings = Omit<
+    Listing,
+    "createdAt"
+> & {
+    createdAt: string
+}
 // Define a new type called SafeUser, which is a modified version of the User type.
 export type SafeUser = Omit<
     User, // Create SafeUser based on the User type.
@@ -10,3 +17,5 @@ export type SafeUser = Omit<
     updatedAt: string // Add a field updatedAt with a string type.
     emailVerified: string | null // Add a field emailVerified with a string or null type.
 }
+
+

@@ -35,7 +35,7 @@ export default async function Home() {
     <ClientOnly>
       <Container>
         <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-2 gap-8">
-          {listings.map((listing: any) => (
+          {listings.map((listing) => (
             // Render 'ListingsCard' components for each listing, passing in the 'currentUser' and 'data' props.
             <ListingsCard
               currentUser={currentUser}
