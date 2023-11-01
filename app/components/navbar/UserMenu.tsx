@@ -13,6 +13,8 @@ import { User } from '@prisma/client';
 import { signOut } from 'next-auth/react';
 import { SafeUser } from '@/app/types';
 
+import {useRouter} from 'next/navigation'
+
 import LoginModal from '../modals/LoginModal';
 import useRentModal from '@/app/hooks/useRentModal';
 
@@ -29,6 +31,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
     const rentModal = useRentModal();
+    const router = useRouter()
 
     // Initialize a state variable 'isOpen' and a function 'setisOpen' using the 'useState' hook.
     const [isOpen, setisOpen] = useState(false);
@@ -73,7 +76,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                         {currentUser ? (
                             <>
                                 {/* If a user is logged in, show user-specific menu options. */}
-                                <MenuItem onClick={() => { }} label='My Trips' /> {/* Show user's trips. */}
+                                <MenuItem onClick={() => router.push('/trips')} label='My Trips' /> {/* Show user's trips. */}
                                 <MenuItem onClick={() => { }} label='My Favourites' /> {/* Show user's favorites. */}
                                 <MenuItem onClick={() => { }} label='My Reservations' /> {/* Show user's reservations. */}
                                 <MenuItem onClick={rentModal.onOpen} label='Staycation My Home' /> {/* Show user's home details. */}

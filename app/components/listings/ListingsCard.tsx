@@ -3,9 +3,7 @@ import React, { useMemo } from 'react';
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { SafeListings, SafeUser } from '@/app/types';
-
-import { Listing, Reservation } from '@prisma/client';
+import { SafeListing, SafeUser, SafeReservation } from '@/app/types';
 
 import useCountries from '@/app/hooks/useCountries';
 import { format } from 'date-fns';
@@ -17,8 +15,8 @@ import Button from '../Button';
  * Props for the ListingsCard component.
  */
 interface ListingsCardProps {
-    data: SafeListings;            // Listing data to display.
-    reservation?: Reservation; // Reservation data, if applicable.
+    data: SafeListing;            // Listing data to display.
+    reservation?: SafeReservation; // Reservation data, if applicable.
     onAction?: (id: string) => void;  // Callback function for user actions.
     disabled?: boolean;       // Flag indicating if the component is disabled.
     actionLabel?: string;     // Label for the action button.
