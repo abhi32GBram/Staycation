@@ -53,6 +53,7 @@ const RegisterModal = () => {
             .then(() => {
                 // Close the registration modal upon success.
                 registerModal.onClose();
+                loginModal.onOpen()
             })
             .catch((error) => {
                 toast.error('Something went wrong');
@@ -108,4 +109,4 @@ const RegisterModal = () => {
 // Export the RegisterModal component as the default export of this module.
 export default RegisterModal;
 
-//1 35 
+// 7 30 

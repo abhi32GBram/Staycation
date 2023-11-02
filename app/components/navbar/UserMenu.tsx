@@ -77,8 +77,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
                             <>
                                 {/* If a user is logged in, show user-specific menu options. */}
                                 <MenuItem onClick={() => router.push('/trips')} label='My Trips' /> {/* Show user's trips. */}
-                                <MenuItem onClick={() => { }} label='My Favourites' /> {/* Show user's favorites. */}
-                                <MenuItem onClick={() => { }} label='My Reservations' /> {/* Show user's reservations. */}
+                                <MenuItem onClick={() => router.push('/favourites')} label='My Favourites' /> {/* Show user's favorites. */}
+                                <MenuItem onClick={ () => router.push('/reservations')} label='My Reservations' /> {/* Show user's reservations. */}
+                                <MenuItem onClick={ () => router.push('/properties')} label='My Properties' /> {/* Show user's reservations. */}
                                 <MenuItem onClick={rentModal.onOpen} label='Staycation My Home' /> {/* Show user's home details. */}
                                 <hr />
                                 <MenuItem onClick={() => signOut()} label='Log Out' /> {/* Log out the user. */}

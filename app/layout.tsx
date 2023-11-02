@@ -1,69 +1,52 @@
+// Import the Nunito font from Google Fonts to use in the application.
+import { Nunito } from 'next/font/google';
 
-// Import necessary modules and components.
+// Import React components and modules.
+import Navbar from '@/app/components/navbar/Navbar'; // The application's navigation bar.
+import LoginModal from '@/app/components/modals/LoginModal'; // Modal for user login.
+import RegisterModal from '@/app/components/modals/RegisterModal'; // Modal for user registration.
+import SearchModal from '@/app/components/modals/SearchModal'; // Modal for search filters.
+import RentModal from '@/app/components/modals/RentModal'; // Modal for renting properties.
 
-// Import the 'Metadata' type from the 'next' package.
-import type { Metadata } from 'next'
+import ToasterProvider from '@/app/providers/ToasterProvider'; // Provider for displaying toasts.
 
-// Import the 'Nunito' font from the 'next/font/google' package.
-import { Nunito } from 'next/font/google'
+import './globals.css'; // Global CSS styles for the application.
+import ClientOnly from './components/ClientOnly'; // Component for client-only rendering.
+import getCurrentUser from './actions/getCurrentUser'; // Function to get the current user.
 
-// Import the global styles from the 'globals.css' file.
-import './globals.css'
-
-// Import the 'Navbar' component from the 'Navbar' module.
-import Navbar from './components/navbar/Navbar'
-
-// Import the 'ClientOnly' component from the 'ClientOnly' module.
-import ClientOnly from './components/ClientOnly'
-
-// Import the 'RegisterModal' component from the 'modals/RegisterModal' module.
-import RegisterModal from './components/modals/RegisterModal'
-
-// Import the 'LoginModal' component from the 'components/modals/LoginModal' module.
-import LoginModal from './components/modals/LoginModal'
-
-// Import the 'ToasterProvider' for displaying toasts/messages.
-import ToasterProvider from './providers/ToasterProvider'
-
-// Import the 'getCurrentUser' function from './actions/getCurrentUser'.
-import getCurrentUser from './actions/getCurrentUser'
-import RentModal from './components/modals/RentModal'
-
-// Define metadata for the page.
-export const metadata: Metadata = {
-  title: 'Staycation', // Set the page title.
+// Metadata for the application.
+export const metadata = {
+  title: 'Staycation',
   description: 'Find unique and affordable accommodations for your next staycation', // Set the page description.
-}
+};
 
-// Load the 'Nunito' font with the "latin" subset.
+// Define the Nunito font with the 'latin' subset.
 const font = Nunito({
-  subsets: ["latin"]
-})
+  subsets: ['latin'],
+});
 
-// Define the RootLayout component to structure the page layout.
+// Define the RootLayout component, which is the root layout for the application.
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  // Retrieve the current user data by calling the 'getCurrentUser' function.
-  const currentUser = await getCurrentUser()
+  // Get the current user asynchronously.
+  const currentUser = await getCurrentUser();
 
   return (
-    // Define the basic structure of the HTML document with the 'lang' attribute set to "en".
     <html lang="en">
-      <body className={font.className}> {/* Apply the 'Nunito' font class to the body. */}
+      <body className={font.className}>
         <ClientOnly>
-          <ToasterProvider /> {/* Provide a context for displaying toasts/messages. */}
-          <RegisterModal /> {/* Render the registration modal. */}
-          <RentModal />
-          <LoginModal /> {/* Render the Login modal using Google or Github. */}
-          <Navbar currentUser={currentUser} /> {/* Include the Navbar component for the page's navigation and pass the 'currentUser' data. */}
+          <ToasterProvider /> {/* Provides toast notifications for the application. */}
+          <LoginModal /> {/* Modal for user login. */}
+          <RegisterModal /> {/* Modal for user registration. */}
+          <SearchModal /> {/* Modal for search filters. */}
+          <RentModal /> {/* Modal for renting properties. */}
+          <Navbar currentUser={currentUser} /> {/* Navigation bar with user information. */}
         </ClientOnly>
-        <div className='pb-20 pt-28'>
-          {children} {/* Render the main content (children) of the page. */}
-        </div>
+        <div className="pb-20 pt-28">{children}</div> {/* Render the child components. */}
       </body>
     </html>
-  )
+  );
 }

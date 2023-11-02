@@ -1,1 +1,12 @@
-Chages made in 
+The final commit includes the following : 
+
+Loading Guest Reservations on your account
+Loading my own Trips on other's propert
+Loading my all of my Properties 
+Loading Favourated Properties
+
+Added the Custom interactive calendar booking utility with date range
+Added booking and viewing booked trips endopoints 
+Added customer interative search bar with server filters 
+
+Added Loaders, Error State, Endopoints protection with authentications 
