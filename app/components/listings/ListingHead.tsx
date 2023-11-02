@@ -64,7 +64,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
                     {/* Render the HeartButton component for favoriting the listing. */}
                     <HeartButton
                         listingId={id}
-                        currentUser={currentUser}
+                        currentUser={currentUser!}
                     />
                 </div>
             </div>
