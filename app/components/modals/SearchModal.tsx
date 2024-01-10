@@ -117,9 +117,8 @@ const SearchModal = () => {
     // Define the label for the secondary action button based on the current step.
     const secondaryActionLabel = useMemo(() => {
         if (step === STEPS.LOCATION) {
-            return undefined
+            return ""
         }
-
         return 'Back'
     }, [step]);
 

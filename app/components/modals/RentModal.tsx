@@ -137,10 +137,10 @@ const RentModal = () => {
     // Determine the label for the secondary action button based on the current step.
     const secondaryActionLabel = useMemo(() => {
         if (step === STEPS.CATEGORY) {
-            return undefined
+            return "";
         }
-        return 'Back'
-    }, [step])
+        return 'Back';
+    }, [step]);
 
     // Define the content for the modal's body based on the current step.
     let bodyContent = (

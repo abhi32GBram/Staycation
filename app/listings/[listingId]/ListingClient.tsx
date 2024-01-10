@@ -66,8 +66,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
     // Get the category for the listing.
     const category = useMemo(() => {
-        return categories.find((items) =>
-            items.label === listing.category);
+        const foundCategory = categories.find((items) => items.label === listing.category);
+        return foundCategory || { icon: '', label: '', description: '' };
     }, [listing.category]);
 
     // Initialize state variables.

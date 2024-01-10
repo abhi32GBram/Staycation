@@ -27,7 +27,7 @@ const Search = () => {
     // Compute the location label based on the selected location value.
     const locationLabel = useMemo(() => {
         if (locationValue) {
-            return getByValue(locationValue as string)?.label;
+            return (getByValue(locationValue as string)?.label || '');
         }
 
         return 'Anywhere';
